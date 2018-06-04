@@ -1,1 +1,149 @@
+display('start');
+% On first time to load inp data run execute this command on workspace:
+% bypass = 0
+%data Read
+if bypass ==0
+%      [num text] = xlsread('ECUexoMutsigoutoncoprint_5.xlsx', 'Sheet1');
+     [num text] = xlsread ('ECUexoMutsigoutoncoprint_5.xlsx', 'ECUexoMutsigoutoncoprint_4');
+    bypass = 1;
+
+end
+
+SampleColumn = text (2:end,1);
+SecondColumn = text (2:end,2);
+GeneColumn = text (2:end,3);
+AlterationColumn = text (2:end,4);
+
+UniqueGene = unique (GeneColumn);
+
+UniqueGeneXaxis = UniqueGene';
+UniqueSampleColumn  = Unique (SampleColumn);
+display('done');
+
+[nouse NoOfColumns] = size (UniqueGeneXaxis);
+[NoOfRows nouse] = size(SampleColumn);
+
+FullCellMatrix = cell (NoOfRows,NoOfcolumns);
+display('size of full data......')
+size(text)
+display('size of unique data......')
+size(FullCellMatrix)
+
+%Filling up the initilization final matrix fill up
+
+%for i=1:NoOfRows
+%  for j=1:NoOfColumns
+%  %   FullCellMatrix{i,j} = ['junkdata 'num2str(i) '#' num2str(j)};
+%  %   FullCellMatrix{i,j} = '#';
+%    end
+% end
+
+
+% search Algorithm
+
+  display
+for i=2:LengthOfUniqueSampleColumn
+    for k=1:LengthOfUniqueGeneXaxis
+        for j=1:NoofRows
+            %Tester patch
+            if  (i==15)&&(k==11)&&(j==1600)
+                    display('test');
+               end
+              %End Tester patch
+              %In all alterations carrying 2 letters flanking (single letter)
+              %both sides of a number) numbers like V70L, P345S, you should put MUT:
+              %Alteration logic
+              temp_ar = double(AlterationColumn{j});
+              isMut = 0;%Flag to check the mutation  
+              DigitCounter = 0; %count number of digits in the alteration
+              if length(temp_ar)>1 %exeception handling
+                  if (temp_ar(1) >=65) && (temp_ar(1) <=90) && (temp_ar(end) >=65) && (temp_ar(end) <=90)
+                     for r=1:length(temp_ar)
+                            if  (temp_ar(r) >=48) &&  (temp_ar(1) <=57) && r~=1 && r~=length(temp_ar)
+                                  DigitCounter = DigitCounter; %increment conter to check all are numerical ended with altnumerical patterns
+                            end
+                    end
+               end
+              end  %exception handling ends
+              if  (Digitcounter ==length(temp_ar) -2)
+                    isMut = 1; %Patern matches altercation to identify Mutations.
+              end
+              if isMut ==1
+                   alteration_value =strcat('MUT:, AlterationColumn(j));
+              else
+                  alteration_value = 'CNA:HOMDEL';
+              end
+
+              %End Alteration logic
+              if (strcmp(UniqueGeneXaxis{1,k},GeneColumn{j,1}))  &&  (strcmp(FullCellMatrix{i,1}, SampleColumn{j,1))
+                        %FullCellMatrix{i,k} = strcat(FullCellMatrix{i,k},';',AlterationColumn(j));
+                        FullCellMatrix{i,k} = strcat(FullCellMatrix{i,k},alteration_value,';');
+
+
+                end
+              end
+
+%                display ('I------------------------------->'); 
+%                display (i);
+%                display ('j------------------------------->');
+%                display ('j');
+
+%           end
+% end
+
+% Algorithm for search and insertion
+
+
+%function [index] = binarySearch (A, n, m)
+
+
+% %------------------------------------------------------------------------------------
+
+% % Syntax:     [index] = binarySearch(A,n,num);
+%
+% % Inputs:     A: Array  (sorted) that you want to search
+%               n: Length of array A
+%               num: number you want to search in array A
+%
+% %Outputs:     index: Return position in A that A(index) == num
+%                       or -1 if num does not exist in A
+%
+%Description: This function find number in array (sorted) using binary search
+%
+%
+%Complexiity: 0(1)   best-case performance
+%             0(log 2 (n)) worst-case performance
+%
+
+
+
+% left =1;
+% right = n;
+% flag = 0;
+%
+% while left <= right
+     mid = cell ((left + right) / 2);
+%
+%    if A(mid) ==num
+          index = mid;
+          flag = 1;
+          break;
+%     else if A(mid) >num
+          right = mid +1;
+%      end
+
+%   end
+
+% end
+
+%
+
+%
+
+%  if flag ==0;
+       index = -1;
+%
+%   end
+%
+% end
 
